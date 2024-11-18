@@ -14,15 +14,16 @@ import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
 import 'package:snap_grade_grader/views/widgets/topbar.dart';
 
-class PeriksajawabanPage extends StatefulWidget {
+class PeriksajawabanCrossPage extends StatefulWidget {
   final Uint8List masterImage;
-  const PeriksajawabanPage({super.key, required this.masterImage});
+  const PeriksajawabanCrossPage({super.key, required this.masterImage});
 
   @override
-  State<PeriksajawabanPage> createState() => _PeriksajawabanPageState();
+  State<PeriksajawabanCrossPage> createState() =>
+      _PeriksajawabanCrossPageState();
 }
 
-class _PeriksajawabanPageState extends State<PeriksajawabanPage> {
+class _PeriksajawabanCrossPageState extends State<PeriksajawabanCrossPage> {
   Uint8List? studentImage;
   String responseMessage = '';
   Uint8List? decodedImage;
@@ -80,7 +81,7 @@ class _PeriksajawabanPageState extends State<PeriksajawabanPage> {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://127.0.0.1:5000/process-circles'),
+      Uri.parse('http://127.0.0.1:5000/process-cross'),
       //Uri.parse('http://localhost:5000/process-circles'),
     );
 
@@ -116,10 +117,25 @@ class _PeriksajawabanPageState extends State<PeriksajawabanPage> {
 
         showScore(context, data['score'].toInt());
       } else {
+        // setState(() {
+        //   responseMessage = 'Failed to upload images.';
+        // });
+        //showErrorDialog(context, 'Failed to upload images.');
+        // Handle error response
+        var errorMessage = 'Unknown error occurred';
+        try {
+          var errorData =
+              json.decode(await streamedResponse.stream.bytesToString());
+          errorMessage = errorData['error'] ??
+              errorMessage; // Use server-provided error if available
+        } catch (e) {
+          debugPrint('Failed to parse error response: $e');
+        }
+
         setState(() {
-          responseMessage = 'Failed to upload images.';
+          responseMessage = 'Failed to upload images. Error: $errorMessage';
         });
-        showErrorDialog(context, 'Failed to upload images.');
+        showErrorDialog(context, responseMessage);
       }
     } catch (e) {
       setState(() {
@@ -275,7 +291,7 @@ class _PeriksajawabanPageState extends State<PeriksajawabanPage> {
               const TopBar(),
               const SizedBox(height: 64),
               const Text(
-                'Periksa Jawaban bulat (O)',
+                'Periksa Jawaban cross (x)',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.black,

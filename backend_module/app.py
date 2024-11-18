@@ -43,7 +43,8 @@ def load_model():
     """
     global model_instance
     try:
-        model_instance = YOLO("C:/Users/vian8/Desktop/Tugas2/SNAPGRADE/model/yolo/best.pt")
+        #model_instance = YOLO("C:/Users/vian8/Desktop/Tugas2/SNAPGRADE/model/yolo/best.pt")
+        model_instance = YOLO("E:/Coding Projects/snap_app/backend_module/model/yolo/best.pt")
         print("YOLO model loaded successfully.")
     except Exception as e:
         print(f"Error loading YOLO model: {e}")

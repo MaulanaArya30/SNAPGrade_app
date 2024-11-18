@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snap_grade_grader/views/buat_kunci.dart';
 import 'package:snap_grade_grader/views/periksa_jawaban.dart';
+import 'package:snap_grade_grader/views/periksa_jawaban_cross.dart';
 import 'package:snap_grade_grader/views/widgets/circlebutton.dart';
 import 'package:snap_grade_grader/views/widgets/topbar.dart';
 import 'dart:typed_data';
@@ -37,11 +38,88 @@ class _NeqQuizPageState extends State<NewquizPage> {
         ),
       );
     } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => PeriksajawabanPage(masterImage: masterImage!),
-        ),
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Pilih tipe jawaban',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                PeriksajawabanPage(masterImage: masterImage!),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF424D72),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Text(
+                          'jawaban bulat (O)',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'Montserrat',
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PeriksajawabanCrossPage(
+                                masterImage: masterImage!),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF424D72),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Text(
+                          'jawaban cross (x)',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'Montserrat',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 30),
+              ],
+            ),
+          );
+        },
       );
     }
   }
