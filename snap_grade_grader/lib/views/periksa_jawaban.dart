@@ -81,6 +81,7 @@ class _PeriksajawabanPageState extends State<PeriksajawabanPage> {
     var request = http.MultipartRequest(
       'POST',
       Uri.parse('http://127.0.0.1:5000/process-circles'),
+      //Uri.parse('http://localhost:5000/process-circles'),
     );
 
     request.files.add(http.MultipartFile.fromBytes(
@@ -113,17 +114,36 @@ class _PeriksajawabanPageState extends State<PeriksajawabanPage> {
           decodedImage = decodedBytes;
         });
 
-        showScore(context, data['score']);
+        showScore(context, data['score'].toInt());
       } else {
         setState(() {
           responseMessage = 'Failed to upload images.';
         });
+        showErrorDialog(context, 'Failed to upload images.');
       }
     } catch (e) {
       setState(() {
         responseMessage = 'Error: $e';
       });
+      showErrorDialog(context, 'Connection error. Please check the server.');
     }
+  }
+
+  void showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> matchAnswer(BuildContext context) async {
@@ -165,6 +185,7 @@ class _PeriksajawabanPageState extends State<PeriksajawabanPage> {
     Navigator.pop(context);
 
     await submitImages();
+    print("done" + responseMessage);
   }
 
   void showScore(BuildContext context, int score) {
