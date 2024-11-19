@@ -81,8 +81,9 @@ class _PeriksajawabanCrossPageState extends State<PeriksajawabanCrossPage> {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://127.0.0.1:5000/process-cross'),
-      //Uri.parse('http://localhost:5000/process-circles'),
+      //Uri.parse('http://127.0.0.1:5000/process-cross'),
+      Uri.parse(
+          'https://incredible-commitment-production.up.railway.app/process-cross'),
     );
 
     request.files.add(http.MultipartFile.fromBytes(
