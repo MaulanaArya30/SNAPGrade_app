@@ -311,6 +311,7 @@ class _PeriksajawabanPageState extends State<PeriksajawabanPage> {
               const SizedBox(height: 20),
               !imageLoaded
                   ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         CircleButton(

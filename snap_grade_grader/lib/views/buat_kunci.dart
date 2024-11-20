@@ -133,6 +133,7 @@ class _BuatkunciPageState extends State<BuatkunciPage> {
             ),
             const SizedBox(height: 40),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 CircleButton(
