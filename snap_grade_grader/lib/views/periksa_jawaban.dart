@@ -99,8 +99,16 @@ class _PeriksajawabanPageState extends State<PeriksajawabanPage> {
       contentType: MediaType('image', 'jpeg'),
     ));
 
+    final stopwatch = Stopwatch()..start();
+
     try {
       var streamedResponse = await request.send();
+
+      stopwatch.stop();
+      double logTime =
+          stopwatch.elapsedMilliseconds / 1000; // Convert to seconds
+      String roundedLogTime = logTime.toStringAsFixed(2);
+
       if (streamedResponse.statusCode == 200) {
         var response = await http.Response.fromStream(streamedResponse);
         var data = json.decode(response.body);
@@ -115,7 +123,7 @@ class _PeriksajawabanPageState extends State<PeriksajawabanPage> {
           decodedImage = decodedBytes;
         });
 
-        showScore(context, data['score'].toInt());
+        showScore(context, data['score'].toInt(), roundedLogTime);
       } else {
         setState(() {
           responseMessage = 'Failed to upload images.';
@@ -181,7 +189,7 @@ class _PeriksajawabanPageState extends State<PeriksajawabanPage> {
         );
       },
     );
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 3));
 
     Navigator.pop(context);
 
@@ -189,7 +197,7 @@ class _PeriksajawabanPageState extends State<PeriksajawabanPage> {
     print("done" + responseMessage);
   }
 
-  void showScore(BuildContext context, int score) {
+  void showScore(BuildContext context, int score, String roundedLogTime) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -254,6 +262,17 @@ class _PeriksajawabanPageState extends State<PeriksajawabanPage> {
                         ),
                       ),
                     ),
+                  ),
+                ),
+                //LOG TIme
+                const SizedBox(height: 20),
+                Text(
+                  'Waktu Proses: ${roundedLogTime} detik',
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ],
